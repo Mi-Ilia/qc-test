@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Трекер привычек</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="app-container">
+        <!-- Header -->
+        <header class="header">
+            <div class="header-content">
+                <h1 class="app-title">
+                    <span class="logo">📊</span> Трекер привычек
+                </h1>
+                <button id="theme-toggle" class="icon-btn" aria-label="Переключить тему">
+                    <svg class="icon icon-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <circle cx="12" cy="12" r="5"></circle>
+                        <line x1="12" y1="1" x2="12" y2="3"></line>
+                        <line x1="12" y1="21" x2="12" y2="23"></line>
+                        <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+                        <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+                        <line x1="1" y1="12" x2="3" y2="12"></line>
+                        <line x1="21" y1="12" x2="23" y2="12"></line>
+                        <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+                        <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+                    </svg>
+                    <svg class="icon icon-moon hidden" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+                    </svg>
+                </button>
+            </div>
+        </header>
+
+        <!-- Dashboard -->
+        <section class="dashboard" aria-label="Панель статистики">
+            <div class="stat-card">
+                <div class="stat-value" id="total-habits">0</div>
+                <div class="stat-label">Всего привычек</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-value" id="today-progress">0 / 0</div>
+                <div class="stat-label">Выполнено сегодня</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-value" id="weekly-progress">0%</div>
+                <div class="stat-label">Прогресс за неделю</div>
+            </div>
+            <div class="stat-card stat-card--wide">
+                <div class="stat-label">Недельный прогресс</div>
+                <div class="progress-bar-container">
+                    <div class="progress-bar" id="weekly-bar" style="width: 0%"></div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Week Navigation -->
+        <section class="week-nav" aria-label="Навигация по неделям">
+            <button id="prev-week" class="nav-btn" aria-label="Предыдущая неделя">
+                <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <polyline points="15 18 9 12 15 6"></polyline>
+                </svg>
+            </button>
+            <div class="week-info">
+                <span id="week-range"></span>
+            </div>
+            <button id="next-week" class="nav-btn" aria-label="Следующая неделя">
+                <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <polyline points="9 18 15 12 9 6"></polyline>
+                </svg>
+            </button>
+            <button id="today-btn" class="btn btn--secondary">Сегодня</button>
+        </section>
+
+        <!-- Tracker Table -->
+        <section class="tracker-section" aria-label="Таблица отслеживания">
+            <div class="table-container">
+                <table class="tracker-table" id="tracker-table">
+                    <thead>
+                        <tr id="table-header-row"></tr>
+                    </thead>
+                    <tbody id="table-body"></tbody>
+                </table>
+            </div>
+            
+            <!-- Empty State -->
+            <div id="empty-state" class="empty-state hidden">
+                <div class="empty-state-icon">🌱</div>
+                <h3>Нет привычек</h3>
+                <p>Добавьте первую привычку, чтобы начать отслеживать прогресс</p>
+                <button id="add-first-habit" class="btn btn--primary">Добавить привычку</button>
+            </div>
+        </section>
+
+        <!-- Add Habit Section -->
+        <section class="add-habit-section" aria-label="Добавление привычки">
+            <h2 class="section-title">Добавить привычку</h2>
+            <form id="add-habit-form" class="add-habit-form">
+                <div class="form-group">
+                    <label for="habit-name" class="form-label">Название привычки</label>
+                    <input type="text" id="habit-name" class="form-input" placeholder="Например: Пить воду" required maxlength="50">
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Иконка</label>
+                    <div class="icon-picker" id="icon-picker">
+                        <button type="button" class="icon-option selected" data-icon="💧">💧</button>
+                        <button type="button" class="icon-option" data-icon="📚">📚</button>
+                        <button type="button" class="icon-option" data-icon="🏃">🏃</button>
+                        <button type="button" class="icon-option" data-icon="😴">😴</button>
+                        <button type="button" class="icon-option" data-icon="🥗">🥗</button>
+                        <button type="button" class="icon-option" data-icon="🧘">🧘</button>
+                        <button type="button" class="icon-option" data-icon="✍️">✍️</button>
+                        <button type="button" class="icon-option" data-icon="🎯">🎯</button>
+                        <button type="button" class="icon-option" data-icon="💪">💪</button>
+                        <button type="button" class="icon-option" data-icon="🚿">🚿</button>
+                        <button type="button" class="icon-option" data-icon="🌿">🌿</button>
+                        <button type="button" class="icon-option" data-icon="⭐">⭐</button>
+                    </div>
+                    <input type="hidden" id="selected-icon" value="💧">
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Цвет</label>
+                    <div class="color-picker" id="color-picker">
+                        <button type="button" class="color-option selected" data-color="#3b82f6" style="background-color: #3b82f6;"></button>
+                        <button type="button" class="color-option" data-color="#10b981" style="background-color: #10b981;"></button>
+                        <button type="button" class="color-option" data-color="#f59e0b" style="background-color: #f59e0b;"></button>
+                        <button type="button" class="color-option" data-color="#ef4444" style="background-color: #ef4444;"></button>
+                        <button type="button" class="color-option" data-color="#8b5cf6" style="background-color: #8b5cf6;"></button>
+                        <button type="button" class="color-option" data-color="#ec4899" style="background-color: #ec4899;"></button>
+                        <button type="button" class="color-option" data-color="#06b6d4" style="background-color: #06b6d4;"></button>
+                        <button type="button" class="color-option" data-color="#84cc16" style="background-color: #84cc16;"></button>
+                    </div>
+                    <input type="hidden" id="selected-color" value="#3b82f6">
+                </div>
+                <button type="submit" class="btn btn--primary btn--full">Добавить привычку</button>
+            </form>
+        </section>
+
+        <!-- Data Management -->
+        <section class="data-section" aria-label="Управление данными">
+            <h2 class="section-title">Управление данными</h2>
+            <div class="data-actions">
+                <button id="export-btn" class="btn btn--secondary">
+                    <svg class="icon icon-sm" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                        <polyline points="7 10 12 15 17 10"></polyline>
+                        <line x1="12" y1="15" x2="12" y2="3"></line>
+                    </svg>
+                    Экспорт данных
+                </button>
+                <button id="import-btn" class="btn btn--secondary">
+                    <svg class="icon icon-sm" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                        <polyline points="17 8 12 3 7 8"></polyline>
+                        <line x1="12" y1="3" x2="12" y2="15"></line>
+                    </svg>
+                    Импорт данных
+                </button>
+                <input type="file" id="import-file" accept=".json" class="hidden">
+                <button id="reset-data-btn" class="btn btn--danger">
+                    <svg class="icon icon-sm" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <polyline points="3 6 5 6 21 6"></polyline>
+                        <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path>
+                    </svg>
+                    Сбросить все данные
+                </button>
+            </div>
+            <div class="data-note">
+                <p>⚠️ Данные хранятся только в вашем браузере (localStorage). Очистка данных браузера удалит все привычки. Используйте экспорт для создания резервных копий.</p>
+            </div>
+        </section>
+
+        <!-- Footer -->
+        <footer class="footer">
+            <p>Трекер привычек &copy; 2024. Все данные хранятся локально.</p>
+        </footer>
+    </div>
+
+    <!-- Toast Container -->
+    <div id="toast-container" class="toast-container"></div>
+
+    <!-- Edit Modal -->
+    <div id="edit-modal" class="modal hidden">
+        <div class="modal-overlay"></div>
+        <div class="modal-content">
+            <h2 class="modal-title">Изменить привычку</h2>
+            <form id="edit-habit-form" class="edit-form">
+                <input type="hidden" id="edit-habit-id">
+                <div class="form-group">
+                    <label for="edit-habit-name" class="form-label">Название</label>
+                    <input type="text" id="edit-habit-name" class="form-input" required maxlength="50">
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Иконка</label>
+                    <div class="icon-picker" id="edit-icon-picker"></div>
+                    <input type="hidden" id="edit-selected-icon">
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Цвет</label>
+                    <div class="color-picker" id="edit-color-picker"></div>
+                    <input type="hidden" id="edit-selected-color">
+                </div>
+                <div class="modal-actions">
+                    <button type="button" id="cancel-edit" class="btn btn--secondary">Отмена</button>
+                    <button type="submit" class="btn btn--primary">Сохранить</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Delete Confirmation Modal -->
+    <div id="delete-modal" class="modal hidden">
+        <div class="modal-overlay"></div>
+        <div class="modal-content modal-content--small">
+            <h2 class="modal-title">Удалить привычку?</h2>
+            <p id="delete-confirm-text">Вы уверены, что хотите удалить эту привычку? Все записи о выполнении будут удалены.</p>
+            <input type="hidden" id="delete-habit-id">
+            <div class="modal-actions">
+                <button type="button" id="cancel-delete" class="btn btn--secondary">Отмена</button>
+                <button type="button" id="confirm-delete" class="btn btn--danger">Удалить</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Import Confirmation Modal -->
+    <div id="import-confirm-modal" class="modal hidden">
+        <div class="modal-overlay"></div>
+        <div class="modal-content modal-content--small">
+            <h2 class="modal-title">Подтверждение импорта</h2>
+            <p>Импортированные данные заменят текущие. Вы уверены?</p>
+            <div class="modal-actions">
+                <button type="button" id="cancel-import" class="btn btn--secondary">Отмена</button>
+                <button type="button" id="confirm-import" class="btn btn--primary">Импортировать</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="app.js"></script>
+</body>
+</html>
